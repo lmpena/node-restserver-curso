@@ -16,9 +16,7 @@ let urlDB;
 if (process.env.NODE_ENV === 'dev') {
     urlDB = 'mongodb://localhost:27017/cafe';
 } else {
-    urlDB = 'mongodb+srv://user-cafe:cafe123456@cluster0.fndyx.mongodb.net/cafe';
+    urlDB = process.env.MONGO_URI;
 }
-// forzar la prueba en bbdd remota
-//urlDB = 'mongodb+srv://user-cafe:cafe123456@cluster0.fndyx.mongodb.net/cafe';
 
 process.env.URLDB = urlDB;
