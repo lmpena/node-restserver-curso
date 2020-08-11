@@ -1,6 +1,7 @@
 // Configuración global
 require('./config/config');
 
+const mongoose = require('mongoose');
 
 const express = require('express');
 const app = express();
@@ -12,36 +13,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-
-app.get('/usuario', (req, res) => res.json('get usuario'));
-//app.post('/usuario', (req, res) => res.json('post usuario'));
-//app.put('/usuario', (req, res) => res.json('put usuario'));
-app.delete('/usuario', (req, res) => res.json('delete usuario'));
+// Umportamos y usamos rutas del usuario.
+app.use(require('./routes/usuario'));
 
 
-app.put('/usuario/:ident', (req, res) => {
-    let id = req.params.ident;
-    res.json({
-        id
-    })
-});
 
-app.post('/usuario', (req, res) => {
-    let body = req.body;
+mongoose.connect(process.env.URLDB, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true
+    },
+    (err, res) => {
 
-    if (body.nombre === undefined) {
+        if (err) throw err;
 
-        res.status(400).json({
-            ok: false,
-            mensaje: 'Elnombre es obligatorio'
-        });
+        console.log('Base de datos ONLINE');
 
-    } else {
-        res.json({
-            body
-        });
-    }
-});
+    });
+
 
 app.listen(process.env.PORT, () => {
     console.log('Escuchando puerto: ', process.env.PORT);
